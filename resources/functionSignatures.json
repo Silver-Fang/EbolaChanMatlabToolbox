@@ -1,0 +1,35 @@
+{
+	"ParseRepeatingFlagArguments": {
+		"inputs": [
+			{
+				"name": "InputFlags",
+				"kind": "required",
+				"type": [
+					"row",
+					"cell"
+				],
+				"purpose": "调用方传来的，待分析的旗帜类重复参数"
+			},
+			{
+				"name": "ValidFlags",
+				"kind": "required",
+				"type": [
+					"scalar",
+					"string"
+				],
+				"repeating": true,
+				"purpose": "函数规定的有效旗帜"
+			}
+		],
+		"outputs": [
+			{
+				"name": "varargout",
+				"type": [
+					"scalar",
+					"logical"
+				],
+				"multiplicity": "append"
+			}
+		]
+	}
+}
