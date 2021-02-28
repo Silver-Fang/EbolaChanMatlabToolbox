@@ -32,26 +32,84 @@
 			}
 		]
 	},
-	"ColorAllocate":{
-		"inputs":[
+	"ColorAllocate": {
+		"inputs": [
 			{
-				"name":"NoColors",
-				"kind":"required",
-				"type":["scalar","uint8"],
-				"purpose":"要分配的颜色个数"
+				"name": "NoColors",
+				"kind": "required",
+				"type": [
+					"scalar",
+					"uint8"
+				],
+				"purpose": "要分配的颜色个数"
 			},
 			{
-				"name":"TryCount",
-				"kind":"ordered",
-				"type":["scalar","uint8"],
-				"purpose":"尝试优化的次数",
-				"default":1
+				"name": "TryCount",
+				"kind": "ordered",
+				"type": [
+					"scalar",
+					"uint8"
+				],
+				"purpose": "尝试优化的次数",
+				"default": 1
 			}
 		],
-		"outputs":[
+		"outputs": [
 			{
-				"name":"Colors",
-				"type":["size=:,3"]
+				"name": "Colors",
+				"type": [
+					"size=:,3"
+				]
+			}
+		]
+	},
+	"DimensionFun": {
+		"inputs": [
+			{
+				"name": "Function",
+				"kind": "required",
+				"type": "function_handle",
+				"purpose": "要执行的函数。必须接受等同于Arguments重复次数的参数"
+			},
+			{
+				"name": "CatMode",
+				"kind": "flag",
+				"type": "choices={'Scalar','Linear','EsNlcs','DontCat'}",
+				"purpose": "返回值拼接选项"
+			},
+			{
+				"name": "Arguments",
+				"kind": "ordered",
+				"repeating": true,
+				"purpose": "输入参数数组"
+			},
+			{
+				"mutuallyExclusiveGroup": [
+					[
+						{
+							"name": "PackDimensions",
+							"kind": "namevalue",
+							"type": [
+								"row",
+								"uint8",
+								"positive"
+							],
+							"purpose": "将每个Arguments数组的指定维度打包"
+						}
+					],
+					[
+						{
+							"name": "SplitDimensions",
+							"kind": "namevalue",
+							"type": [
+								"row",
+								"uint8",
+								"positive"
+							],
+							"purpose": "在每个Arguments数组的指定维度上拆分"
+						}
+					]
+				]
 			}
 		]
 	}
