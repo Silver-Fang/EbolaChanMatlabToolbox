@@ -73,7 +73,7 @@
 			},
 			{
 				"name": "CatMode",
-				"kind": "flag",
+				"kind": "ordered",
 				"type": "choices={'Scalar','Linear','EsNlcs','DontCat'}",
 				"purpose": "返回值拼接选项"
 			},
