@@ -112,5 +112,35 @@
 				]
 			}
 		]
+	},
+	"FolderFun":{
+		"inputs":[
+			{
+				"name":"Function",
+				"kind":"required",
+				"type":"function_handle",
+				"purpose":"要执行的函数句柄"
+			},
+			{
+				"name":"Directory",
+				"kind":"required",
+				"type":"folder",
+				"purpose":"要遍历的文件夹路径"
+			},
+			{
+				"name":"Filename",
+				"kind":"ordered",
+				"type":"file",
+				"purpose":"要筛选出的文件名模式",
+				"default":"*"
+			},
+			{
+				"name":"UniformOutput",
+				"kind":"namevalue",
+				"type":["logical","scalar"],
+				"purpose":"是否将输出值直接拼接成向量",
+				"default":true
+			}
+		]
 	}
 }

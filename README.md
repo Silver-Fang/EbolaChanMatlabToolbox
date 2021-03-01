@@ -98,3 +98,15 @@ SplitDimensions(1,:)uint8{mustBePositive}，在每个Arguments数组的指定维
 - DontCat，返回元胞数组，尺寸与每个Arguments隐式扩展后的尺寸相同，元胞里是对应位置的Arguments输入Function产生的返回值
 ## 已知问题
 当Arguments里含有表格时，将产生未知行为。
+# FolderFun
+取对一个文件夹下所有满足给定文件名模式的文件的绝对路径，对它们执行函数
+## 必需参数
+Function(1,1)function_handle，要执行的函数句柄。必须接受1个文件路径作为输入参数。
+
+Directory(1,1)string，要遍历的文件夹路径
+## 可选参数
+Filename(1,1)string="*"，要筛选出的文件名模式，默认所有文件
+## 名称-值对组参数
+UniformOutput(1,1)logical=true，是否将输出值直接拼接成向量。若false，则将每个输出值套上一层元胞以后再拼接成向量。如果Function返回的不是标量，必须设为false。
+## 返回值
+每个文件路径执行函数后的返回值向量。如果Function有多个返回值，则返回同样多个向量，每个向量元素对应位置都是对一个文件调用Function产生的返回值。根据UniformOutput的设定，这些元素有可能还会套在一层元胞里。
