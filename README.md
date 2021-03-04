@@ -110,3 +110,29 @@ Filename(1,1)string="*"，要筛选出的文件名模式，默认所有文件
 UniformOutput(1,1)logical=true，是否将输出值直接拼接成向量。若false，则将每个输出值套上一层元胞以后再拼接成向量。如果Function返回的不是标量，必须设为false。
 ## 返回值
 每个文件路径执行函数后的返回值向量。如果Function有多个返回值，则返回同样多个向量，每个向量元素对应位置都是对一个文件调用Function产生的返回值。根据UniformOutput的设定，这些元素有可能还会套在一层元胞里。
+# OpenFileDialog
+可以设置初始目录，以及保存上次所在目录的文件打开对话框
+
+MATLAB自带的uigetfile只能将初始目录设为当前目录，且下次打开时不能自动恢复到上次打开的目录，十分不便。本函数调用System.Windows.Forms.OpenFileDialog解决了这一问题。
+## 名称-值对组参数
+### Filter
+(1,1)string，文件名筛选器。
+
+对于每个筛选选项，筛选器字符串都包含筛选器的说明，后跟竖线和筛选器模式。 不同筛选选项的字符串用竖线分隔。
+
+下面是筛选器字符串的示例：
+```
+Text files (*.txt)|*.txt|All files (*.*)|*.*
+```
+可以通过用分号分隔文件类型将多个筛选模式添加到筛选器，例如：
+```
+Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*
+```
+### InitialDirectory
+(1,1)string，文件对话框中显示的初始目录
+### Multiselect
+(1,1)logical。如果对话框允许同时选定多个文件，则为 true；反之，则为 false。 默认值为 false。
+### Title
+(1,1)string，文件对话框标题。该字符串放置在对话框的标题栏中。 如果标题为空字符串，则系统将使用默认标题，即 "另存为" 或 "打开"。
+## 返回值
+FilePaths(:,1)string，包含对话框中所有选定文件的文件名。每个文件名同时包含文件路径和扩展名。如果未选择任何文件，则返回一个空数组。

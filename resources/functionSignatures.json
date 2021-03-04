@@ -113,34 +113,86 @@
 			}
 		]
 	},
-	"FolderFun":{
-		"inputs":[
+	"FolderFun": {
+		"inputs": [
 			{
-				"name":"Function",
-				"kind":"required",
-				"type":"function_handle",
-				"purpose":"要执行的函数句柄"
+				"name": "Function",
+				"kind": "required",
+				"type": "function_handle",
+				"purpose": "要执行的函数句柄"
 			},
 			{
-				"name":"Directory",
-				"kind":"required",
-				"type":"folder",
-				"purpose":"要遍历的文件夹路径"
+				"name": "Directory",
+				"kind": "required",
+				"type": "folder",
+				"purpose": "要遍历的文件夹路径"
 			},
 			{
-				"name":"Filename",
-				"kind":"ordered",
-				"type":"file",
-				"purpose":"要筛选出的文件名模式",
-				"default":"*"
+				"name": "Filename",
+				"kind": "ordered",
+				"type": "file",
+				"purpose": "要筛选出的文件名模式",
+				"default": "*"
 			},
 			{
-				"name":"UniformOutput",
-				"kind":"namevalue",
-				"type":["logical","scalar"],
-				"purpose":"是否将输出值直接拼接成向量",
-				"default":true
+				"name": "UniformOutput",
+				"kind": "namevalue",
+				"type": [
+					"logical",
+					"scalar"
+				],
+				"purpose": "是否将输出值直接拼接成向量",
+				"default": true
 			}
 		]
+	},
+	"OpenFileDialog": {
+		"inputs": [
+			{
+				"name": "Filter",
+				"kind": "properties",
+				"type": [
+					"scalar",
+					"string"
+				],
+				"purpose": "文件名筛选器"
+			},
+			{
+				"name": "InitialDirectory",
+				"kind": "properties",
+				"type": [
+					"folder"
+				],
+				"purpose": "文件对话框中显示的初始目录"
+			},
+			{
+				"name": "Multiselect",
+				"kind": "properties",
+				"type": [
+					"scalar",
+					"logical"
+				],
+				"purpose": "是否允许选择多个文件"
+			},
+			{
+				"name": "Title",
+				"kind": "properties",
+				"type": [
+					"scalar",
+					"string"
+				],
+				"purpose": "文件对话框标题"
+			}
+		],
+		"outputs": [
+			{
+				"name": "FilePaths",
+				"type": [
+					"column",
+					"string"
+				]
+			}
+		],
+		"platforms": "win64"
 	}
 }
