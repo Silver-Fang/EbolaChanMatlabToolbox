@@ -260,4 +260,58 @@
 			}
 		]
 	},
+	"FigureAspectRatio": {
+		"inputs": [
+			{
+				"name": "HorizontalProportion",
+				"kind": "required",
+				"type": "positive",
+				"purpose": "宽度比值。例如如果你希望图窗为4:3，则此值给4"
+			},
+			{
+				"name": "VerticalProportion",
+				"kind": "required",
+				"type": "positive",
+				"purpose": "高度比值。例如如果你希望图窗为4:3，则此值给3"
+			},
+			{
+				"mutuallyExclusiveGroup": [
+					[
+						{
+							"name": "ScaleFactor",
+							"kind": "ordered",
+							"type": "positive",
+							"purpose": "缩放倍率"
+						}
+					],
+					[
+						{
+							"name": "ScaleMode",
+							"kind": "ordered",
+							"type": "choices={'Amplify','Narrow'}",
+							"purpose": "缩放模式"
+						}
+					]
+				]
+			},
+			{
+				"name": "Fig",
+				"kind": "namevalue",
+				"type": [
+					"scalar",
+					"matlab.ui.Figure"
+				],
+				"purpose": "图窗对象。如果指定该参数，将对指定的图窗进行操作，而不一定是当前图窗"
+			}
+		],
+		"outputs": [
+			{
+				"name": "Fig",
+				"type": [
+					"scalar",
+					"matlab.ui.Figure"
+				]
+			}
+		]
+	}
 }

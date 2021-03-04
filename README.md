@@ -176,3 +176,32 @@ LineYs ShadowHeights Xs，这三个向量应当具有相同的长度
 Line(1,1)matlab.graphics.chart.primitive.Line，平均线，plot函数返回的图线对象
 
 Shadow(1,1)matlab.graphics.primitive.Patch，误差阴影，fill函数返回的填充对象
+# FigureAspectRatio
+设置当前图窗的纵横比
+
+在MATLAB之外对图窗进行不维持纵横比的拉伸，往往会导致字符也被扭曲。为了避免这种情况，建议在导出之前在MATLAB内部设置好图窗的纵横比。
+```MATLAB
+%假设当前图窗的尺寸为：宽度×高度=400×300
+FigureAspectRatio(3,2);
+%图窗面积仍为120000，但尺寸变为424×283，即3:2
+FigureAspectRatio(2,1,"Amplify");
+%相对于2:1的比例要求来说，283的高度是较大的，424的宽度是较小的，因此拉宽到566×283
+FigureAspectRatio(1,1,"Narrow");
+%相对于1:1的比例要求来说，283的高度是较小的，566的宽度是较大的，因此压扁到283×283
+FigureAspectRatio(1,2,2);
+%当前面积283×283=80089，放大2²=4倍变成320356，分配宽度1、高度2的比例，则得到400×800
+```
+## 必需参数
+HorizontalProportion(1,1)，宽度比值。例如如果你希望图窗为4:3，则此值给4
+
+VerticalProportion(1,1)，高度比值。例如如果你希望图窗为4:3，则此值给3
+## 可选参数
+Scale=1，缩放倍率或模式。
+- 若为1，表示缩放后的图跟原图面积相等
+- 若为某值k，则缩放后的面积变成缩放前的k²倍
+- 若为"Amplify"，则保持当前比值相对较大的一边长度不变，仅拉长另一边到给定比值
+- 若为"Narrow"，则保持当前比值较小的一边长度不变，仅压缩另一边到给定比值
+## 名称-值对组参数
+Fig(1,1)matlab.ui.Figure=gcf，图窗对象。如果指定该参数，将对指定的图窗进行操作，而不一定是当前图窗。
+## 返回值
+Fig(1,1)matlab.ui.Figure，如果制定了Fig参数，则返回该参数；否则返回当前图窗对象。
