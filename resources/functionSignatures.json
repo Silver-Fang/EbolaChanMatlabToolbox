@@ -150,7 +150,7 @@
 		"inputs": [
 			{
 				"name": "Filter",
-				"kind": "properties",
+				"kind": "namevalue",
 				"type": [
 					"scalar",
 					"string"
@@ -159,7 +159,7 @@
 			},
 			{
 				"name": "InitialDirectory",
-				"kind": "properties",
+				"kind": "namevalue",
 				"type": [
 					"folder"
 				],
@@ -167,7 +167,7 @@
 			},
 			{
 				"name": "Multiselect",
-				"kind": "properties",
+				"kind": "namevalue",
 				"type": [
 					"scalar",
 					"logical"
@@ -176,7 +176,7 @@
 			},
 			{
 				"name": "Title",
-				"kind": "properties",
+				"kind": "namevalue",
 				"type": [
 					"scalar",
 					"string"
