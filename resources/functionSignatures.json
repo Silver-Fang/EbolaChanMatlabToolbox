@@ -194,5 +194,70 @@
 			}
 		],
 		"platforms": "win64"
-	}
+	},
+	"ShadowedLine": {
+		"inputs": [
+			{
+				"name": "LineYs",
+				"kind": "required",
+				"type": [
+					"row",
+					"numeric"
+				],
+				"purpose": "平均值折线Y值，将用plot函数作出"
+			},
+			{
+				"name": "ShadowHeights",
+				"kind": "ordered",
+				"type": [
+					"row",
+					"numeric"
+				],
+				"purpose": "误差范围阴影高度，将用fill函数作出"
+			},
+			{
+				"name": "Xs",
+				"kind": "namevalue",
+				"type": [
+					"row",
+					"numeric"
+				],
+				"purpose": "X轴对应数值向量"
+			},
+			{
+				"name": "LineStyle",
+				"kind": "namevalue",
+				"type": [
+					"row",
+					"cell"
+				],
+				"purpose": "均值折线的样式，将传递给plot函数实现"
+			},
+			{
+				"name": "ShadowStyle",
+				"kind": "namevalue",
+				"type": [
+					"row",
+					"cell"
+				],
+				"purpose": "误差阴影的样式，将传递给fill函数实现"
+			}
+		],
+		"outputs": [
+			{
+				"name": "Line",
+				"type": [
+					"scalar",
+					"matlab.graphics.chart.primitive.Line"
+				]
+			},
+			{
+				"name": "Shadow",
+				"type": [
+					"scalar",
+					"matlab.graphics.primitive.Patch"
+				]
+			}
+		]
+	},
 }

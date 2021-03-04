@@ -136,3 +136,43 @@ Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*
 (1,1)string，文件对话框标题。该字符串放置在对话框的标题栏中。 如果标题为空字符串，则系统将使用默认标题，即 "另存为" 或 "打开"。
 ## 返回值
 FilePaths(:,1)string，包含对话框中所有选定文件的文件名。每个文件名同时包含文件路径和扩展名。如果未选择任何文件，则返回一个空数组。
+# ShadowedLine
+将平均值±误差曲线，通过中间一条均线、两边误差边界阴影的形式作图出来。
+```MATLAB
+tiledlayout("flow");
+%% 基本用法
+nexttile;
+%生成一些随机数据
+Data=rand(10,10);
+%求平均值
+Mean=mean(Data,1);
+%求误差（此处使用SEM）
+Error=std(Data,0,1)/sqrt(10);
+%作图
+DrawFigure.ShadowedLine(Mean,Error);
+%% 自定义样式
+nexttile;
+%横轴在0~1之间
+Xs=linspace(0,1,10);
+%阴影区为半透明红色
+FillStyle={"r","FaceAlpha",0.1,"LineStyle","none"};
+%图线为虚线
+PlotStyle={"--"};
+DrawFigure.ShadowedLine(Mean,Error,Xs,"ShadowStyle",FillStyle,"LineStyle",PlotStyle);
+```
+## 必需参数
+LineYs(1,:)，平均值折线Y值，将用plot函数作出
+
+ShadowHeights(1,:)，误差范围阴影高度，将用fill函数作出
+## 可选参数
+Xs(1,:)=1:numel(LineYs)，X轴对应数值向量
+## 名称-值对组参数
+LineStyle(1,:)cell={'k'}，均值折线的样式，将传递给plot函数实现
+
+ShadowStyle(1,:)cell={"k","FaceAlpha",0.2,"LineStyle","none"}，误差阴影的样式，将传递给fill函数实现
+## 参数互限
+LineYs ShadowHeights Xs，这三个向量应当具有相同的长度
+## 返回值
+Line(1,1)matlab.graphics.chart.primitive.Line，平均线，plot函数返回的图线对象
+
+Shadow(1,1)matlab.graphics.primitive.Patch，误差阴影，fill函数返回的填充对象
