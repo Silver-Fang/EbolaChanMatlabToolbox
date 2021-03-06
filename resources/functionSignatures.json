@@ -313,5 +313,47 @@
 				]
 			}
 		]
+	},
+	"DelimitedStrings2Table":{
+		"inputs":[
+			{
+				"name":"Strings",
+				"kind":"required",
+				"type":["column","string"],
+				"purpose":"分隔符字符串列"
+			},
+			{
+				"name":"FieldNames",
+				"kind":"required",
+				"type":["row","string"],
+				"purpose":"从头开始按顺序排列每个字段的名称。"
+			},
+			{
+				"name":"Delimiter",
+				"kind":"required",
+				"type":["scalar","string"],
+				"purpose":"分隔符，将传递给split用于分隔"
+			},
+			{
+				"name":"TimeField",
+				"kind":"ordered",
+				"type":">=0",
+				"purpose":"时间字段在字符串中是第几个字段",
+				"default":0
+			},
+			{
+				"name":"DatetimeFormat",
+				"kind":"ordered",
+				"type":["scalar","string"],
+				"purpose":"日期时间格式",
+				"default":"yyyyMMddHHmmss"
+			}
+		],
+		"outputs":[
+			{
+				"name":"Table",
+				"type":"tabular"
+			}
+		]
 	}
 }

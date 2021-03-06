@@ -1,20 +1,4 @@
 埃博拉酱的MATLAB工具包，包含简单的单文件MATLAB函数
-# ParseRepeatingFlagArguments
-分析旗帜类重复参数到逻辑变量
-```MATLAB
-function TiffBatchRegister(Flags)
-arguments(Repeating)
-	Flags(1,1)string{mustBeMember(Flags,["Silent","Sequential"])}
-end
-[Silent,Sequential]=ParseRepeatingFlagArguments(Flags,"Silent","Sequential");
-%得到这两个旗帜是否被调用方指定的逻辑值
-```
-## 必需参数
-InputFlags(1,:)cell，调用方传来的，待分析的旗帜类重复参数
-## 重复参数
-ValidFlags(1,1)string，函数规定的有效旗帜
-## 返回值
-varargout(1,1)logical，数目与ValidFlags重复次数相同，返回每个有效旗帜是否存在（被调用方指定）的逻辑值
 # ColorAllocate
 为白色背景下的作图分配合适的颜色
 
@@ -42,6 +26,28 @@ NoColors(1,1)uint8，必需参数，要分配的颜色个数
 TryCount(1,1)uint8=0，可选位置参数，尝试优化的次数。一般来说次数越多优化效果越好，但更消耗时间。默认如果找到了保存的计算结果就不再尝试优化，否则优化1次。
 ## 返回值
 Colors(:,3)，每一行代表一个颜色的RGB值
+# DelimitedStrings2Table
+将一列分隔符字符串的前几个字段读出为表格或时间表
+分隔符字符串列如下形式：
+```
+4003.20210204.BlueBase.All.10%400V_0002.Registered.Measurements.mat
+4003.20210204.BlueBase.PV.10%400V_0002.Registered.Measurements.mat
+4003.20210204.GreenRef.All.10%400V_0005.Registered.Measurements.mat
+4003.20210204.GreenRef.PV.10%400V_0005.Registered.Measurements.mat
+```
+每行一个字符串，字符串用特定的符号分割成了一系列字段。如果前几个字段有固定的意义且在所有字符串中都存在，则可以将它们读出成表。如果某个字段是时间，还可以读出成时间表。
+## 必需参数
+Strings(:,1)string，分隔符字符串列
+
+FieldNames(1,:)string，从头开始按顺序排列每个字段的名称。如果有时间字段，直接跳过，不要在FieldNames里指示，也不要留空，而是直接将后面的字段提前上来。
+
+Delimiter(1,1)string，分隔符，将传递给split用于分隔。
+## 可选位置参数
+TimeField(1,1)uint8=0，时间字段在字符串中是第几个字段。如果设为0，则没有时间字段，返回普通表；否则返回时间表。
+
+DatetimeFormat(1,1)string="yyyyMMddHHmmss"，日期时间格式。不支持含有分隔符的日期时间格式，时间字段字符串必须全为日期时间数字，如"20210306", "202103061723"等。如果实际的字段长度不足，将会自动截短格式字符串以匹配之。将作为datetime函数的InputFormat参数。时间字段在所有字符串之间不需要长度相同。如果TimeField为0，将忽略该参数。
+## 返回值
+Table(:,:)，如果TimeField为0，返回table，否则返回timetable。
 # DimensionFun
 对数组按维度执行函数，支持单一维度隐式扩展和返回数组自动拼接
 
@@ -98,6 +104,35 @@ SplitDimensions(1,:)uint8{mustBePositive}，在每个Arguments数组的指定维
 - DontCat，返回元胞数组，尺寸与每个Arguments隐式扩展后的尺寸相同，元胞里是对应位置的Arguments输入Function产生的返回值
 ## 已知问题
 当Arguments里含有表格时，将产生未知行为。
+# FigureAspectRatio
+设置当前图窗的纵横比
+
+在MATLAB之外对图窗进行不维持纵横比的拉伸，往往会导致字符也被扭曲。为了避免这种情况，建议在导出之前在MATLAB内部设置好图窗的纵横比。
+```MATLAB
+%假设当前图窗的尺寸为：宽度×高度=400×300
+FigureAspectRatio(3,2);
+%图窗面积仍为120000，但尺寸变为424×283，即3:2
+FigureAspectRatio(2,1,"Amplify");
+%相对于2:1的比例要求来说，283的高度是较大的，424的宽度是较小的，因此拉宽到566×283
+FigureAspectRatio(1,1,"Narrow");
+%相对于1:1的比例要求来说，283的高度是较小的，566的宽度是较大的，因此压扁到283×283
+FigureAspectRatio(1,2,2);
+%当前面积283×283=80089，放大2²=4倍变成320356，分配宽度1、高度2的比例，则得到400×800
+```
+## 必需参数
+HorizontalProportion(1,1)，宽度比值。例如如果你希望图窗为4:3，则此值给4
+
+VerticalProportion(1,1)，高度比值。例如如果你希望图窗为4:3，则此值给3
+## 可选参数
+Scale=1，缩放倍率或模式。
+- 若为1，表示缩放后的图跟原图面积相等
+- 若为某值k，则缩放后的面积变成缩放前的k²倍
+- 若为"Amplify"，则保持当前比值相对较大的一边长度不变，仅拉长另一边到给定比值
+- 若为"Narrow"，则保持当前比值较小的一边长度不变，仅压缩另一边到给定比值
+## 名称-值对组参数
+Fig(1,1)matlab.ui.Figure=gcf，图窗对象。如果指定该参数，将对指定的图窗进行操作，而不一定是当前图窗。
+## 返回值
+Fig(1,1)matlab.ui.Figure，如果制定了Fig参数，则返回该参数；否则返回当前图窗对象。
 # FolderFun
 取对一个文件夹下所有满足给定文件名模式的文件的绝对路径，对它们执行函数
 ## 必需参数
@@ -136,6 +171,22 @@ Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*
 (1,1)string，文件对话框标题。该字符串放置在对话框的标题栏中。 如果标题为空字符串，则系统将使用默认标题，即 "另存为" 或 "打开"。
 ## 返回值
 FilePaths(:,1)string，包含对话框中所有选定文件的文件名。每个文件名同时包含文件路径和扩展名。如果未选择任何文件，则返回一个空数组。
+# ParseRepeatingFlagArguments
+分析旗帜类重复参数到逻辑变量
+```MATLAB
+function TiffBatchRegister(Flags)
+arguments(Repeating)
+	Flags(1,1)string{mustBeMember(Flags,["Silent","Sequential"])}
+end
+[Silent,Sequential]=ParseRepeatingFlagArguments(Flags,"Silent","Sequential");
+%得到这两个旗帜是否被调用方指定的逻辑值
+```
+## 必需参数
+InputFlags(1,:)cell，调用方传来的，待分析的旗帜类重复参数
+## 重复参数
+ValidFlags(1,1)string，函数规定的有效旗帜
+## 返回值
+varargout(1,1)logical，数目与ValidFlags重复次数相同，返回每个有效旗帜是否存在（被调用方指定）的逻辑值
 # ShadowedLine
 将平均值±误差曲线，通过中间一条均线、两边误差边界阴影的形式作图出来。
 ```MATLAB
@@ -176,32 +227,3 @@ LineYs ShadowHeights Xs，这三个向量应当具有相同的长度
 Line(1,1)matlab.graphics.chart.primitive.Line，平均线，plot函数返回的图线对象
 
 Shadow(1,1)matlab.graphics.primitive.Patch，误差阴影，fill函数返回的填充对象
-# FigureAspectRatio
-设置当前图窗的纵横比
-
-在MATLAB之外对图窗进行不维持纵横比的拉伸，往往会导致字符也被扭曲。为了避免这种情况，建议在导出之前在MATLAB内部设置好图窗的纵横比。
-```MATLAB
-%假设当前图窗的尺寸为：宽度×高度=400×300
-FigureAspectRatio(3,2);
-%图窗面积仍为120000，但尺寸变为424×283，即3:2
-FigureAspectRatio(2,1,"Amplify");
-%相对于2:1的比例要求来说，283的高度是较大的，424的宽度是较小的，因此拉宽到566×283
-FigureAspectRatio(1,1,"Narrow");
-%相对于1:1的比例要求来说，283的高度是较小的，566的宽度是较大的，因此压扁到283×283
-FigureAspectRatio(1,2,2);
-%当前面积283×283=80089，放大2²=4倍变成320356，分配宽度1、高度2的比例，则得到400×800
-```
-## 必需参数
-HorizontalProportion(1,1)，宽度比值。例如如果你希望图窗为4:3，则此值给4
-
-VerticalProportion(1,1)，高度比值。例如如果你希望图窗为4:3，则此值给3
-## 可选参数
-Scale=1，缩放倍率或模式。
-- 若为1，表示缩放后的图跟原图面积相等
-- 若为某值k，则缩放后的面积变成缩放前的k²倍
-- 若为"Amplify"，则保持当前比值相对较大的一边长度不变，仅拉长另一边到给定比值
-- 若为"Narrow"，则保持当前比值较小的一边长度不变，仅压缩另一边到给定比值
-## 名称-值对组参数
-Fig(1,1)matlab.ui.Figure=gcf，图窗对象。如果指定该参数，将对指定的图窗进行操作，而不一定是当前图窗。
-## 返回值
-Fig(1,1)matlab.ui.Figure，如果制定了Fig参数，则返回该参数；否则返回当前图窗对象。
