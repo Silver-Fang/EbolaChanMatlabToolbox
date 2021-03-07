@@ -194,7 +194,7 @@
 			{
 				"name": "FilePaths",
 				"type": [
-					"column",
+					"row",
 					"string"
 				]
 			}
@@ -360,11 +360,11 @@
 				"name": "DatetimeFormat",
 				"kind": "ordered",
 				"type": [
-					"scalar",
-					"string"
+					"row",
+					"char"
 				],
 				"purpose": "日期时间格式",
-				"default": "yyyyMMddHHmmss"
+				"default": "'yyyyMMddHHmmss'"
 			}
 		],
 		"outputs": [

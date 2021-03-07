@@ -45,7 +45,7 @@ Delimiter(1,1)string，分隔符，将传递给split用于分隔。
 ## 可选位置参数
 TimeField(1,1)uint8=0，时间字段在字符串中是第几个字段。如果设为0，则没有时间字段，返回普通表；否则返回时间表。
 
-DatetimeFormat(1,1)string="yyyyMMddHHmmss"，日期时间格式。不支持含有分隔符的日期时间格式，时间字段字符串必须全为日期时间数字，如"20210306", "202103061723"等。如果实际的字段长度不足，将会自动截短格式字符串以匹配之。将作为datetime函数的InputFormat参数。时间字段在所有字符串之间不需要长度相同。如果TimeField为0，将忽略该参数。
+DatetimeFormat(1,:)char='yyyyMMddHHmmss'，日期时间格式。不支持含有分隔符的日期时间格式，时间字段字符串必须全为日期时间数字，如"20210306", "202103061723"等。如果实际的字段长度不足，将会自动截短格式字符串以匹配之。将作为datetime函数的InputFormat参数。时间字段在所有字符串之间不需要长度相同。如果TimeField为0，将忽略该参数。
 ## 返回值
 Table(:,:)，如果TimeField为0，返回table，否则返回timetable。
 # DimensionFun
@@ -170,7 +170,7 @@ Image Files(*.BMP;*.JPG;*.GIF)|*.BMP;*.JPG;*.GIF|All files (*.*)|*.*
 ### Title
 (1,1)string，文件对话框标题。该字符串放置在对话框的标题栏中。 如果标题为空字符串，则系统将使用默认标题，即 "另存为" 或 "打开"。
 ## 返回值
-FilePaths(:,1)string，包含对话框中所有选定文件的文件名。每个文件名同时包含文件路径和扩展名。如果未选择任何文件，则返回一个空数组。
+FilePaths(1,:)string，包含对话框中所有选定文件的文件名。每个文件名同时包含文件路径和扩展名。如果未选择任何文件，则返回一个空数组。
 # ParseRepeatingFlagArguments
 分析旗帜类重复参数到逻辑变量
 ```MATLAB
