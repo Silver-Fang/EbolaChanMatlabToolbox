@@ -187,6 +187,14 @@ InputFlags(:,1)string，调用方传来的，待分析的旗帜类重复参数
 ValidFlags(1,1)string，函数规定的有效旗帜
 ## 返回值
 varargout(1,1)logical，数目与ValidFlags重复次数相同，返回每个有效旗帜是否存在（被调用方指定）的逻辑值
+# RepeatingFun
+重复多次调用函数，为每个重复参数生成一个返回值
+## 输入参数
+Function(1,1)function_handle，必需，要调用的函数句柄
+
+Arguments，重复，每次调用的输入参数
+## 返回值
+varargout，每个重复输入的参数按顺序生成的返回值
 # ShadowedLine
 将平均值±误差曲线，通过中间一条均线、两边误差边界阴影的形式作图出来。
 ```MATLAB
