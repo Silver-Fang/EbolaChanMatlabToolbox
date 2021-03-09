@@ -80,7 +80,7 @@
 			{
 				"name": "CatMode",
 				"kind": "ordered",
-				"type": "choices={'Scalar','Linear','EsNlcs','DontCat'}",
+				"type": "choices={'Scalar','Linear','EsNlcs','HomoArray','DontCat'}",
 				"purpose": "返回值拼接选项"
 			},
 			{

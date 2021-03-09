@@ -82,6 +82,7 @@ CatMode(1,1)string，可选，默认DontCat，根据其它参数的具体情况�
 - Scalar，Function的返回值为标量。
 - Linear，SplitDimensions为标量，且Function的返回值为类型、PackDimensions维度上尺寸均相同的数组
 - EsNlcs，Function的返回值为数值、逻辑、字符或字段相同的结构体数组，且尺寸完全相同
+- HomoArray，Function的返回值是尺寸、类型均相同的数组
 - DontCat，不符合上述任何条件，或返回值为函数句柄
 
 无论何种情况，都可以设为DontCat；其它选项都必须满足特定条件（对Function的每个返回值）。此外若Function的任何一个返回值是函数句柄，都只能选择DontCat。
@@ -100,7 +101,7 @@ SplitDimensions(1,:)uint8{mustBePositive}，在每个Arguments数组的指定维
 ## 返回值
 返回值为由Function的返回值按其所对应的参数在数组中的位置拼接成的数组。如果Function具有多个返回值，则每个返回值各自拼接成数组，作为本函数的多个返回值。根据CatMode不同：
 - Scalar，返回数组，尺寸与每个Arguments隐式扩展后的尺寸相同
-- Linear & EsNlcs，返回数组，该数组由返回值在SplitDimensions维度上的拼接得到
+- Linear & EsNlcs & HomoArray，返回数组，该数组由返回值在SplitDimensions维度上的拼接得到
 - DontCat，返回元胞数组，尺寸与每个Arguments隐式扩展后的尺寸相同，元胞里是对应位置的Arguments输入Function产生的返回值
 ## 已知问题
 当Arguments里含有表格时，将产生未知行为。
