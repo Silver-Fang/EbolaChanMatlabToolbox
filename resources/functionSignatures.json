@@ -95,6 +95,12 @@
 								"positive"
 							],
 							"purpose": "将每个Arguments数组的指定维度打包"
+						},
+						{
+							"name": "CatMode",
+							"kind": "namevalue",
+							"type": "choices={'Scalar','Linear','EsNlcs','CanCat','DontCat'}",
+							"purpose": "返回值拼接选项"
 						}
 					],
 					[
@@ -107,15 +113,15 @@
 								"positive"
 							],
 							"purpose": "在每个Arguments数组的指定维度上拆分"
+						},
+						{
+							"name": "CatMode",
+							"kind": "namevalue",
+							"type": "choices={'Scalar','Linear','EsNlcs','CanCat','DontCat'}",
+							"purpose": "返回值拼接选项"
 						}
 					]
 				]
-			},
-			{
-				"name": "CatMode",
-				"kind": "namevalue",
-				"type": "choices={'Scalar','Linear','EsNlcs','CanCat','DontCat'}",
-				"purpose": "返回值拼接选项"
 			}
 		]
 	},
