@@ -4,7 +4,8 @@ switch CatMode
 		varargout=cellfun(@cell2mat,varargout,"UniformOutput",false);
 	case "Linear"
 		varargout=cellfun(@(Out)cat(SplitDimensions,Out{:}),varargout,"UniformOutput",false);
-	case "HomoArray"
+	case "CanCat"
+		varargout=cellfun(@SuperCell2Mat,varargout,"UniformOutput",false);
 		NoSD=numel(SplitDimensions);
 		for a=1:nargout
 			Out=varargout{a};

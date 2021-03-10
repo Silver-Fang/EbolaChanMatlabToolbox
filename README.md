@@ -55,17 +55,23 @@ Table(:,:)，如果TimeField为0，返回table，否则返回timetable。
 ```MATLAB
 %% 图像拼接-1
 %本示例将一系列宽度相同的图片纵向拼接成一张长图。假设ImagePaths是一个包含了待拼接图像路径的列向量
-imshow(DimensionFun(@imread,"Linear",ImagePaths,"SplitDimensions",1));
+imshow(DimensionFun(@imread,ImagePaths,"CatMode","Linear"));
 %由于ImagePaths是向量，且imread返回uint8数值类型，因此以下写法也是等效的：
-imshow(DimensionFun(@imread,"EsNlcs",ImagePaths,"PackDimensions",2));
+imshow(DimensionFun(@imread,ImagePaths,"CatMode","Linear"));
 %% 图像拼接-2
 %同样是拼接图象，如果ImagePaths是一个待拼接的子图路径的矩阵呢？同样可以按照这个矩阵对这些图像自动进行二维拼接！
-imshow(DimensionFun(@imread,"EsNlcs",ImagePaths,"SplitDimensions",[1 2]));
+imshow(DimensionFun(@imread,ImagePaths,"CatMode","CanCat"));
+%% 异形数组拼接
+A={1 [2 3]
+[4 5] 6}
+%此元胞数组直接使用cell2mat拼接会报错，但可以使用本函数拼接：
+C=DimensionFun(@cell2mat,A);
+%此示例仅用于展示DimensionFun的拼接功能，实际上可以直接使用SuperCell2Mat(A)一步到位。本函数实际上也是调用该函数实现的。
 %% 序列采样-拆分打包与隐式扩展的相互作用展示
 Sequence=1:10;
 Start=(1:5)';
 End=(6:10)';
-disp(DimensionFun(@(Sequence,Start,End)Sequence(Start:End),"Linear",Sequence,Start,End,"SplitDimensions",1));
+disp(DimensionFun(@(Sequence,Start,End)Sequence(Start:End),Sequence,Start,End,"SplitDimensions",1,"CatMode","Linear"));
 %输出
 %     1     2     3     4     5     6
 %     2     3     4     5     6     7
@@ -74,37 +80,30 @@ disp(DimensionFun(@(Sequence,Start,End)Sequence(Start:End),"Linear",Sequence,Sta
 %     5     6     7     8     9    10
 %注意，由于SplitDimensions仅为第1维，因此具有单一第1维的Sequence发生了隐式扩展，而具有单一第2维的Start和End未发生隐式扩展，而是直接打包交付给Function运算。
 ```
-请注意，CatMode参数默认值为DontCat，即将每次调用Function产生的返回值放在单独的元胞中，这种处理方式具有最高的健壮性，不容易出错，但性能较低。如果这些返回值均为相同类型的标量，希望返回数组，应将CatMode设为Scalar。其它可选CatMode值的含义见下文。
-## 位置参数
-Function(1,1)function_handle，必需，要执行的函数。必须接受等同于Arguments重复次数的参数
-
-CatMode(1,1)string，可选，默认DontCat，根据其它参数的具体情况设定，必须为以下四者之一：
-- Scalar，Function的返回值为标量。
-- Linear，SplitDimensions为标量，且Function的返回值为类型、PackDimensions维度上尺寸均相同的数组
-- EsNlcs，Function的返回值为数值、逻辑、字符或字段相同的结构体数组，且尺寸完全相同
-- HomoArray，Function的返回值是尺寸、类型均相同的数组
-- DontCat，不符合上述任何条件，或返回值为函数句柄
-
-无论何种情况，都可以设为DontCat；其它选项都必须满足特定条件（对Function的每个返回值）。此外若Function的任何一个返回值是函数句柄，都只能选择DontCat。
+## 必需参数
+Function(1,1)function_handle，要执行的函数。必须接受等同于Arguments重复次数的参数
 ## 重复参数
-Arguments，输入参数数组。输入的数组个数必须等于Function所能接受的输入值个数。所有数组各维度尺寸要么相等，要么为1，不允许各不相同的维度尺寸。
+Arguments，输入参数数组。输入的数组个数必须等于Function所能接受的输入值个数。所有数组各维度尺寸要么相等，要么为1，不允许各不相同的维度尺寸。不允许输入表格或其它非MATLAB标准数组，请始终先转化为MATLAB数组或元胞数组。
 ## 名称-值对组参数
-以下两个名称-值对组参数只能选择其中一个进行指定，另一个将会自动计算得出
-
-PackDimensions(1,:)uint8{mustBePositive}，将每个Arguments数组的指定维度打包，在其它维度（即SplitDimensions）上拆分，分别交付给Function执行
-
-SplitDimensions(1,:)uint8{mustBePositive}，在每个Arguments数组的指定维度上拆分，将其它维度（即PackDimensions）打包，分别交付给Function执行
+以下两个名称-值对组参数只能选择其中一个进行指定，另一个将会自动计算得出。如果两个参数都不指定，将把第一个Arguments所有非单一维度视为SplitDimensions，其它维度作为PackDimensions。
+- PackDimensions(1,:)uint8{mustBePositive}，将每个Arguments数组的指定维度打包，在其它维度（即SplitDimensions）上拆分，分别交付给Function执行
+- SplitDimensions(1,:)uint8{mustBePositive}，在每个Arguments数组的指定维度上拆分，将其它维度（即PackDimensions）打包，分别交付给Function执行
 
 注意，拆分-打包步骤在隐式扩展之前。也就是说，由于PackDimensions指定的维度被包入了同一个元胞当中，尺寸恒为1，即使不同数组间这些维度具有不同的尺寸，也不会进行隐式扩展。隐式扩展仅在SplitDimensions中进行。
 
-如果两个参数都不指定，将把第一个Arguments所有非单一维度视为SplitDimensions，其它维度作为PackDimensions
+CatMode(1,1)string="CanCat"，返回值拼接选项，根据Function的返回值设定，必须为以下四者之一：
+- Scalar，Function的返回值为标量，将调用arrayfun完成拼接。
+- Linear，SplitDimensions为标量，且Function的返回值为类型、PackDimensions维度上尺寸均相同的数组。将调用cat完成拼接。
+- EsNlcs，Function的返回值为数值、逻辑、字符或字段相同的结构体数组，且尺寸完全相同。将调用cell2mat完成拼接。
+- CanCat，Function的返回值为数组，允许尺寸不同，但最终可以拼接成一整个大数组。将调用SuperCell2Mat完成拼接。
+- DontCat，不符合上述任何条件，或返回值为函数句柄。将不会拼接，返回元胞数组。
+
+无论何种情况，都可以设为DontCat；其它选项都必须满足特定条件（对Function的每个返回值）。此外若Function的任何一个返回值是函数句柄，都只能选择DontCat。对于任何可拼接的情况，选择CanCat都能完成拼接，但性能最低。如果您确定您的函数返回值可以满足更苛刻的条件，应尽量优先选择Scalar>Linear>EsNlcs>CanCat。
 ## 返回值
 返回值为由Function的返回值按其所对应的参数在数组中的位置拼接成的数组。如果Function具有多个返回值，则每个返回值各自拼接成数组，作为本函数的多个返回值。根据CatMode不同：
-- Scalar，返回数组，尺寸与每个Arguments隐式扩展后的尺寸相同
-- Linear & EsNlcs & HomoArray，返回数组，该数组由返回值在SplitDimensions维度上的拼接得到
-- DontCat，返回元胞数组，尺寸与每个Arguments隐式扩展后的尺寸相同，元胞里是对应位置的Arguments输入Function产生的返回值
-## 已知问题
-当Arguments里含有表格时，将产生未知行为。
+- Scalar，返回数组，尺寸与每个Arguments在SplitDimensions上隐式扩展后的尺寸相同，PackDimensions上尺寸为1
+- Linear & EsNlcs & CanCat，返回数组，该数组由返回值在SplitDimensions维度上的拼接得到
+- DontCat，返回元胞数组，尺寸与每个Arguments在SplitDimensions上隐式扩展后的尺寸相同，元胞里是对应位置的Arguments输入Function产生的返回值。PackDimensions上尺寸为1。
 # FigureAspectRatio
 设置当前图窗的纵横比
 
@@ -236,3 +235,21 @@ LineYs ShadowHeights Xs，这三个向量应当具有相同的长度
 Line(1,1)matlab.graphics.chart.primitive.Line，平均线，plot函数返回的图线对象
 
 Shadow(1,1)matlab.graphics.primitive.Patch，误差阴影，fill函数返回的填充对象
+# SuperCell2Mat
+cell2mat的升级版
+
+本函数是cell2mat的升级版，使用前请先参阅cell2mat函数文档，了解其功能和局限性。
+
+cell2mat是一个功能十分强大的MATLAB函数，可以将元胞数组内的数组提取出来，拼成一个大数组，而且这些数组的尺寸不必完全相同，例如可以支持以下拼接：
+
+![](resources/cell2mat.gif)
+
+但它也存在局限性。首先，只支持数值、逻辑、结构体、字符的拼接，其它常见数据类型（字符串、元胞、类对象）都无法使用。其次。对于以下结构，虽然尺寸恰好合适，但也无法拼接：
+
+![](resources/SuperCell2Mat.png)
+
+这是因为cell2mat默认先拼第1维，自然会遇到尺寸不匹配的问题。但我们可以看到，只要先拼第2维，就可以得到1×3和2×3两个矩阵，然后第1维就可以拼接了。本函数不仅支持各种数据类型，还会自动尝试从不同的维度进行拼接，因此支持更多复杂的结构。
+
+输入参数：Cells cell，要拼接的元胞数组，各元胞内含有数据类型一致的数组，且各维尺寸上恰好可以拼接成一个大数组，维度不限。
+
+返回值：拼接好的大数组

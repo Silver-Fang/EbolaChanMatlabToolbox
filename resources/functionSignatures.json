@@ -78,12 +78,6 @@
 				"purpose": "要执行的函数。必须接受等同于Arguments重复次数的参数"
 			},
 			{
-				"name": "CatMode",
-				"kind": "ordered",
-				"type": "choices={'Scalar','Linear','EsNlcs','HomoArray','DontCat'}",
-				"purpose": "返回值拼接选项"
-			},
-			{
 				"name": "Arguments",
 				"kind": "ordered",
 				"repeating": true,
@@ -116,6 +110,12 @@
 						}
 					]
 				]
+			},
+			{
+				"name": "CatMode",
+				"kind": "namevalue",
+				"type": "choices={'Scalar','Linear','EsNlcs','CanCat','DontCat'}",
+				"purpose": "返回值拼接选项"
 			}
 		]
 	},
@@ -387,6 +387,16 @@
 				"kind":"ordered",
 				"repeating":true,
 				"purpose":"每次调用的输入参数"
+			}
+		]
+	},
+	"SuperCell2Mat":{
+		"inputs":[
+			{
+				"name":"Cells",
+				"kind":"required",
+				"type":"cell",
+				"purpose":"要拼接的元胞数组"
 			}
 		]
 	}
