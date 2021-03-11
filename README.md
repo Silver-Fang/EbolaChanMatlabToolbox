@@ -235,6 +235,21 @@ LineYs ShadowHeights Xs，这三个向量应当具有相同的长度
 Line(1,1)matlab.graphics.chart.primitive.Line，平均线，plot函数返回的图线对象
 
 Shadow(1,1)matlab.graphics.primitive.Patch，误差阴影，fill函数返回的填充对象
+# StructAggregateByFields
+对结构体的每个字段执行累积运算，累积结果放在一个字段相同的结构体标量中返回。
+```MATLAB
+A(1).a=1;
+A(1).b=2;
+A(2).a=3;
+A(2).b=4;
+B=StructAggregateByFields(@cell2mat,A)
+```
+## 输入参数
+AggregateFunction(1,1)function_handle，要执行的累积函数，必须接受一个和StructArray尺寸相同的元胞数组输入
+
+StructArray struct，要累积的结构体数组
+## 返回值
+(1,1)struct，和StructArray字段相同的结构体标量，保存每个字段各自的累积运算结果。
 # SuperCell2Mat
 cell2mat的升级版
 

@@ -405,5 +405,27 @@
 				"purpose":"要拼接的元胞数组"
 			}
 		]
+	},
+	"StructAggregateByFields":{
+		"inputs":[
+			{
+				"name":"AggregateFunction",
+				"kind":"required",
+				"type":["scalar","function_handle"],
+				"purpose":"要执行的累积函数，必须接受一个和StructArray尺寸相同的元胞数组输入"
+			},
+			{
+				"name":"StructArray",
+				"kind":"required",
+				"type":"struct",
+				"purpose":"要累积的结构体数组"
+			}
+		],
+		"outputs":[
+			{
+				"name":"StructScalar",
+				"type":["scalar","struct"]
+			}
+		]
 	}
 }
