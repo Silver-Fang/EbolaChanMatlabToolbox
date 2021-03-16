@@ -104,6 +104,26 @@ CatMode(1,1)string="CanCat"，返回值拼接选项，根据Function的返回值
 - Scalar，返回数组，尺寸与每个Arguments在SplitDimensions上隐式扩展后的尺寸相同，PackDimensions上尺寸为1
 - Linear & EsNlcs & CanCat，返回数组，该数组由返回值在SplitDimensions维度上的拼接得到
 - DontCat，返回元胞数组，尺寸与每个Arguments在SplitDimensions上隐式扩展后的尺寸相同，元胞里是对应位置的Arguments输入Function产生的返回值。PackDimensions上尺寸为1。
+# ElasticChart
+弹簧图，反映点之间的距离关系。
+
+假设各点之间是弹簧，有一个自然长度，拉伸则变细但施加拉力，压缩则变粗但施加推力。已知各点之间的距离，连接上自然长度为这个距离的弹簧，就可以在二维平面上自动对抗平衡出弹簧系统图
+## 必需参数
+DistanceMatrix(:,:)numeric，正方形距离矩阵，两两点间距离的精确值。无数据的请填入NaN
+
+PointNames(:,1)string，和矩阵边长相等的字符串向量，每个点的名称
+
+Iteration(1,1)numeric，迭代次数。次数越多越精细准确，但耗时越长。
+## 可选参数
+Positions(1,:)complex，每个点的初始位置，行向量，用复数表示
+## 名称-值对组参数
+ScatterStyle(1,:)cell，散点样式，将传递给scatter，默认{[],'green'}
+
+TextStyle(1,:)cell，文字样式，将传递给text，默认{'Color','red','HorizontalAlignment','center','VerticalAlignment','middle'}
+
+PlotStyle(1,:)cell，线条样式，将传递给plot，默认{'blue'}
+## 返回值
+Positions(1,:)complex，弹簧系统平衡后的各点位置。
 # FigureAspectRatio
 设置当前图窗的纵横比
 

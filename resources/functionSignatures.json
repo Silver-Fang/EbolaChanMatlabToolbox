@@ -380,51 +380,133 @@
 			}
 		]
 	},
-	"RepeatingFun":{
-		"inputs":[
+	"RepeatingFun": {
+		"inputs": [
 			{
-				"name":"Function",
-				"kind":"required",
-				"type":"function_handle",
-				"purpose":"要调用的函数句柄"
+				"name": "Function",
+				"kind": "required",
+				"type": "function_handle",
+				"purpose": "要调用的函数句柄"
 			},
 			{
-				"name":"Arguments",
-				"kind":"ordered",
-				"repeating":true,
-				"purpose":"每次调用的输入参数"
+				"name": "Arguments",
+				"kind": "ordered",
+				"repeating": true,
+				"purpose": "每次调用的输入参数"
 			}
 		]
 	},
-	"SuperCell2Mat":{
-		"inputs":[
+	"SuperCell2Mat": {
+		"inputs": [
 			{
-				"name":"Cells",
-				"kind":"required",
-				"type":"cell",
-				"purpose":"要拼接的元胞数组"
+				"name": "Cells",
+				"kind": "required",
+				"type": "cell",
+				"purpose": "要拼接的元胞数组"
 			}
 		]
 	},
-	"StructAggregateByFields":{
-		"inputs":[
+	"StructAggregateByFields": {
+		"inputs": [
 			{
-				"name":"AggregateFunction",
-				"kind":"required",
-				"type":["scalar","function_handle"],
-				"purpose":"要执行的累积函数，必须接受一个和StructArray尺寸相同的元胞数组输入"
+				"name": "AggregateFunction",
+				"kind": "required",
+				"type": [
+					"scalar",
+					"function_handle"
+				],
+				"purpose": "要执行的累积函数，必须接受一个和StructArray尺寸相同的元胞数组输入"
 			},
 			{
-				"name":"StructArray",
-				"kind":"required",
-				"type":"struct",
-				"purpose":"要累积的结构体数组"
+				"name": "StructArray",
+				"kind": "required",
+				"type": "struct",
+				"purpose": "要累积的结构体数组"
 			}
 		],
-		"outputs":[
+		"outputs": [
 			{
-				"name":"StructScalar",
-				"type":["scalar","struct"]
+				"name": "StructScalar",
+				"type": [
+					"scalar",
+					"struct"
+				]
+			}
+		]
+	},
+	"ElasticChart": {
+		"inputs": [
+			{
+				"name": "DistanceMatrix",
+				"kind": "required",
+				"type": [
+					"square",
+					"numeric"
+				],
+				"purpose": "两两点间距离的精确值。无数据的请填入NaN"
+			},
+			{
+				"name": "PointNames",
+				"kind": "required",
+				"type": [
+					"string",
+					"vector"
+				],
+				"purpose": "每个点的名称"
+			},
+			{
+				"name": "Iteration",
+				"kind": "required",
+				"type": "positive",
+				"purpose": "迭代次数。次数越多越精细准确，但耗时越长"
+			},
+			{
+				"name": "Positions",
+				"kind": "ordered",
+				"type": [
+					"vector",
+					"complex"
+				],
+				"purpose": "每个点的初始位置，行向量，用复数表示"
+			},
+			{
+				"name": "ScatterStyle",
+				"kind": "namevalue",
+				"type": [
+					"vector",
+					"cell"
+				],
+				"purpose": "散点样式，将传递给scatter",
+				"default": "{[],'green'}"
+			},
+			{
+				"name": "TextStyle",
+				"kind": "namevalue",
+				"type": [
+					"vector",
+					"cell"
+				],
+				"purpose": "文字样式，将传递给text",
+				"default": "{'Color','red','HorizontalAlignment','center','VerticalAlignment','middle'}"
+			},
+			{
+				"name": "PlotStyle",
+				"kind": "namevalue",
+				"type": [
+					"vector",
+					"cell"
+				],
+				"purpose": "线条样式，将传递给plot",
+				"default": "{'blue'}"
+			}
+		],
+		"outputs": [
+			{
+				"name": "Positions",
+				"type": [
+					"row",
+					"complex"
+				]
 			}
 		]
 	}
