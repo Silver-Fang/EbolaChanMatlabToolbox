@@ -208,7 +208,7 @@ Mean=mean(Data,1);
 %求误差（此处使用SEM）
 Error=std(Data,0,1)/sqrt(10);
 %作图
-DrawFigure.ShadowedLine(Mean,Error);
+ShadowedLine(Mean,Error);
 %% 自定义样式
 nexttile;
 %横轴在0~1之间
@@ -217,7 +217,7 @@ Xs=linspace(0,1,10);
 FillStyle={"r","FaceAlpha",0.1,"LineStyle","none"};
 %图线为虚线
 PlotStyle={"--"};
-DrawFigure.ShadowedLine(Mean,Error,Xs,"ShadowStyle",FillStyle,"LineStyle",PlotStyle);
+ShadowedLine(Mean,Error,Xs,"ShadowStyle",FillStyle,"LineStyle",PlotStyle);
 ```
 ## 必需参数
 LineYs(1,:)，平均值折线Y值，将用plot函数作出
