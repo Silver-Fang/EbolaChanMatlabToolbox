@@ -80,17 +80,18 @@ disp(DimensionFun(@(Sequence,Start,End)Sequence(Start:End),Sequence,Start,End,"S
 %     5     6     7     8     9    10
 %注意，由于SplitDimensions仅为第1维，因此具有单一第1维的Sequence发生了隐式扩展，而具有单一第2维的Start和End未发生隐式扩展，而是直接打包交付给Function运算。
 ```
-## 必需参数
-Function(1,1)function_handle，要执行的函数。必须接受等同于Arguments重复次数的参数
-## 重复参数
-Arguments，输入参数数组。输入的数组个数必须等于Function所能接受的输入值个数。所有数组各维度尺寸要么相等，要么为1，不允许各不相同的维度尺寸。不允许输入表格或其它非MATLAB标准数组，请始终先转化为MATLAB数组或元胞数组。
+## 位置参数
+Function(1,1)function_handle，必需，要执行的函数。必须接受等同于Arguments重复次数的参数
+
+Arguments，重复，输入参数数组。输入的数组个数必须等于Function所能接受的输入值个数。所有数组各维度尺寸要么相等，要么为1，不允许各不相同的维度尺寸。不允许输入表格或其它非MATLAB标准数组，请始终先转化为MATLAB数组或元胞数组。
 ## 名称-值对组参数
-以下两个名称-值对组参数只能选择其中一个进行指定，另一个将会自动计算得出。如果两个参数都不指定，将把第一个Arguments所有非单一维度视为SplitDimensions，其它维度作为PackDimensions。
+### 以下两个参数只能选择其中一个进行指定
+另一个将会自动计算得出。如果两个参数都不指定，将把第一个Arguments所有非单一维度视为SplitDimensions，其它维度作为PackDimensions。
 - PackDimensions(1,:)uint8{mustBePositive}，将每个Arguments数组的指定维度打包，在其它维度（即SplitDimensions）上拆分，分别交付给Function执行
 - SplitDimensions(1,:)uint8{mustBePositive}，在每个Arguments数组的指定维度上拆分，将其它维度（即PackDimensions）打包，分别交付给Function执行
 
 注意，拆分-打包步骤在隐式扩展之前。也就是说，由于PackDimensions指定的维度被包入了同一个元胞当中，尺寸恒为1，即使不同数组间这些维度具有不同的尺寸，也不会进行隐式扩展。隐式扩展仅在SplitDimensions中进行。
-
+### 以下两个参数可任意指定或不指定
 CatMode(1,1)string="CanCat"，返回值拼接选项，根据Function的返回值设定，必须为以下四者之一：
 - Scalar，Function的返回值为标量，将调用arrayfun完成拼接。
 - Linear，SplitDimensions为标量，且Function的返回值为类型、PackDimensions维度上尺寸均相同的数组。将调用cat完成拼接。
@@ -99,10 +100,12 @@ CatMode(1,1)string="CanCat"，返回值拼接选项，根据Function的返回值
 - DontCat，不符合上述任何条件，或返回值为函数句柄。将不会拼接，返回元胞数组。
 
 无论何种情况，都可以设为DontCat；其它选项都必须满足特定条件（对Function的每个返回值）。此外若Function的任何一个返回值是函数句柄，都只能选择DontCat。对于任何可拼接的情况，选择CanCat都能完成拼接，但性能最低。如果您确定您的函数返回值可以满足更苛刻的条件，应尽量优先选择Scalar>Linear>EsNlcs>CanCat。
+
+Warning(1,1)logical=true，如果输入参数只有一个且为空，Function将不会被调用，因而无法获知返回值的数据类型，可能会与输入参数不为空的情况出现不一致的情形。该参数指定这种情况下是否要显示警告。
 ## 返回值
 返回值为由Function的返回值按其所对应的参数在数组中的位置拼接成的数组。如果Function具有多个返回值，则每个返回值各自拼接成数组，作为本函数的多个返回值。根据CatMode不同：
 - Scalar，返回数组，尺寸与每个Arguments在SplitDimensions上隐式扩展后的尺寸相同，PackDimensions上尺寸为1
-- Linear & EsNlcs & CanCat，返回数组，该数组由返回值在SplitDimensions维度上的拼接得到
+- Linear | EsNlcs | CanCat，返回数组，该数组由返回值在SplitDimensions维度上的拼接得到
 - DontCat，返回元胞数组，尺寸与每个Arguments在SplitDimensions上隐式扩展后的尺寸相同，元胞里是对应位置的Arguments输入Function产生的返回值。PackDimensions上尺寸为1。
 # FigureAspectRatio
 设置当前图窗的纵横比

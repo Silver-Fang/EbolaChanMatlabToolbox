@@ -100,7 +100,15 @@
 							"name": "CatMode",
 							"kind": "namevalue",
 							"type": "choices={'Scalar','Linear','EsNlcs','CanCat','DontCat'}",
-							"purpose": "返回值拼接选项"
+							"purpose": "返回值拼接选项",
+							"default":"CanCat"
+						},
+						{
+							"name": "Warning",
+							"kind": "namevalue",
+							"type": ["logical","scalar"],
+							"purpose": "如果输入参数只有一个且为空，是否显示警告",
+							"default":true
 						}
 					],
 					[
@@ -118,7 +126,15 @@
 							"name": "CatMode",
 							"kind": "namevalue",
 							"type": "choices={'Scalar','Linear','EsNlcs','CanCat','DontCat'}",
-							"purpose": "返回值拼接选项"
+							"purpose": "返回值拼接选项",
+							"default":"CanCat"
+						},
+						{
+							"name": "Warning",
+							"kind": "namevalue",
+							"type": ["logical","scalar"],
+							"purpose": "如果输入参数只有一个且为空，是否显示警告",
+							"default":true
 						}
 					]
 				]
