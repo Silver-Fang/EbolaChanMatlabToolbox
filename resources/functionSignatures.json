@@ -56,8 +56,7 @@
 					"scalar",
 					"uint8"
 				],
-				"purpose": "尝试优化的次数",
-				"default": 1
+				"purpose": "尝试优化的次数"
 			}
 		],
 		"outputs": [
