@@ -448,5 +448,50 @@
 				]
 			}
 		]
+	},
+	"ArrayBuilder":{
+		"inputs":[
+			{
+				"name":"BuildDimension",
+				"kind":"required",
+				"type":["positive","scalar"],
+				"purpose":"累加维度",
+				"default":1
+			}
+		],
+		"outputs":[
+			{
+				"name":"obj",
+				"type":["scalar","ArrayBuilder"]
+			}
+		]
+	},
+	"ArrayBuilder.Append":{
+		"inputs":[
+			{
+				"name":"obj",
+				"kind":"required",
+				"type":["scalar","ArrayBuilder"]
+			},
+			{
+				"name":"New",
+				"kind":"required",
+				"purpose":"累加内容。所有累加内容在累加维度上尺寸可以不一致，但在其它维度上必须一致。"
+			}
+		]
+	},
+	"ArrayBuilder.Harvest":{
+		"inputs":[
+			{
+				"name":"obj",
+				"kind":"required",
+				"type":["scalar","ArrayBuilder"]
+			}
+		],
+		"outputs":[
+			{
+				"name":"Array"
+			}
+		]
 	}
 }
